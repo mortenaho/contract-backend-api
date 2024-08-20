@@ -1,0 +1,30 @@
+﻿@page "/counter"
+@using Contract.UI.Services
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+    private static int currentCount = 0;
+     
+
+    protected override async Task OnInitializedAsync()
+    {
+        IncrementCount();
+       // currentCount =  localStorage.GetItem<int>("currentCount") == 0 ? 0 :  localStorage.GetItem<int>("currentCount");
+
+    }
+
+    private void IncrementCount()
+    {
+        currentCount =  localStorage.GetItem<int>("currentCount") == 0 ? 0 :  localStorage.GetItem<int>("currentCount");
+        currentCount++;
+        localStorage.SetItem("currentCount", currentCount);
+    }
+
+}
