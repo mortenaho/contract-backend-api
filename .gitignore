@@ -62,3 +62,12 @@
 /.idea/.idea.Contract/.idea/encodings.xml
 /.idea/.idea.Contract/.idea/indexLayout.xml
 /.idea/.idea.Contract/.idea/vcs.xml
+/Contract.UI/bin/*
+/Contract.Api/bin/*
+/Contract.Model/bin/*
+/Contract.Repository/bin/*
+
+/Contract.UI/obj/*
+/Contract.Api/obj/*
+/Contract.Model/obj/*
+/Contract.Repository/obj/*
