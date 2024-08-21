@@ -3,6 +3,7 @@ using AutoMapper;
 using Contract.DTOs.Request;
 using Contract.DTOs.Response;
 using Contract.Repository;
+using Contract.Repository.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,11 +13,11 @@ namespace Contract.Controller;
 [Route("api/v1/[controller]/[action]")]
 public class ContractController : ControllerBase
 {
-    private readonly ApplicationDbContext _db;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    public ContractController(ApplicationDbContext dbContext,IMapper mapper)
+    public ContractController(ApplicationDbContext dbContext,IMapper mapper,IUnitOfWork  unitOfWork)
     {
-        _db = dbContext;
+        _unitOfWork = unitOfWork;
         this._mapper = mapper;
     }
 
@@ -24,7 +25,7 @@ public class ContractController : ControllerBase
     [HttpGet]
     public GeneralResponse<IEnumerable<DTOs.embeded.Contract>> Get()
     {
-        var res = _db.Contract.ToList();
+        var res = _unitOfWork.Contract.GetAll().ToList();
         var mapperRes=_mapper.Map<List<DTOs.embeded.Contract>>(res);
         return new GeneralResponse<IEnumerable<DTOs.embeded.Contract>>()
         {
@@ -41,8 +42,8 @@ public class ContractController : ControllerBase
         string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var contract = _mapper.Map<Model.Entities.Contract>(request);
         contract.UserId = userId;
-        _db.Contract.Add(contract);
-        _db.SaveChanges();
+        _unitOfWork.Contract.Add(contract);
+        _unitOfWork.Save();
         return new GeneralResponse()
         {
             ResponseCode = 100,
