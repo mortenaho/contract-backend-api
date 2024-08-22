@@ -15,7 +15,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
     public IEnumerable<T> GetAll() => _dbSet.ToList();
 
-    public T GetById(int id) => _dbSet.Find(id);
+    public T GetById(long id) => _dbSet.Find(id);
 
     public void Add(T entity) => _dbSet.Add(entity);
 

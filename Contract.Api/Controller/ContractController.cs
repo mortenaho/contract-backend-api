@@ -15,7 +15,7 @@ public class ContractController : ControllerBase
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    public ContractController(ApplicationDbContext dbContext,IMapper mapper,IUnitOfWork  unitOfWork)
+    public ContractController(IMapper mapper,IUnitOfWork  unitOfWork)
     {
         _unitOfWork = unitOfWork;
         this._mapper = mapper;
@@ -28,6 +28,20 @@ public class ContractController : ControllerBase
         var res = _unitOfWork.Contract.GetAll().ToList();
         var mapperRes=_mapper.Map<List<DTOs.embeded.Contract>>(res);
         return new GeneralResponse<IEnumerable<DTOs.embeded.Contract>>()
+        {
+            ResponseCode = 100,
+            ResponseMessage = "operation success",
+            ResponseBody = mapperRes
+        };
+    }
+    
+    [Authorize]
+    [HttpGet("{id}")]
+    public GeneralResponse<DTOs.embeded.Contract> Get(long id)
+    {
+        var res = _unitOfWork.Contract.GetById(id);
+        var mapperRes=_mapper.Map<DTOs.embeded.Contract>(res);
+        return new GeneralResponse<DTOs.embeded.Contract>()
         {
             ResponseCode = 100,
             ResponseMessage = "operation success",
