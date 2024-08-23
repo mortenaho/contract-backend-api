@@ -51,7 +51,7 @@ public class ContractController : ControllerBase
 
     [Authorize]
     [HttpPost]
-    public GeneralResponse AddContract(ContractRequest request)
+    public GeneralResponse Add(ContractRequest request)
     {
         string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var contract = _mapper.Map<Model.Entities.Contract>(request);
@@ -66,7 +66,7 @@ public class ContractController : ControllerBase
     }
     [Authorize]
     [HttpPut]
-    public GeneralResponse UpdateContract(ContractRequest request)
+    public GeneralResponse Update(ContractRequest request)
     {
         string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var contract = _mapper.Map<Model.Entities.Contract>(request);
