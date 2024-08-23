@@ -64,4 +64,19 @@ public class ContractController : ControllerBase
             ResponseMessage = "operation is success full"
         };
     }
+    [Authorize]
+    [HttpPut]
+    public GeneralResponse UpdateContract(ContractRequest request)
+    {
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var contract = _mapper.Map<Model.Entities.Contract>(request);
+        contract.UserId = userId;
+        _unitOfWork.Contract.Update(contract);
+        _unitOfWork.Save();
+        return new GeneralResponse()
+        {
+            ResponseCode = 100,
+            ResponseMessage = "operation is success full"
+        };
+    }
 }

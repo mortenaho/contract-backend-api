@@ -44,6 +44,7 @@ app.UseCors(opt =>
     opt.AllowAnyOrigin();
     
 });
+app.UseCustomExceptionHandler();
 app.UseAuthorization();
 app.MapControllers();
  
