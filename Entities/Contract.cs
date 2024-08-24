@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Contract.Model.Entities;
+namespace Entities;
 
 [Table("Contract")]
 public class Contract:BaseEntity

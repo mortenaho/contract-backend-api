@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Contract.Model.Entities;
+namespace Entities;
 
 public class User
 {

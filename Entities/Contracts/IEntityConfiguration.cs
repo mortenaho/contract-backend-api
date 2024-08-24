@@ -1,4 +1,4 @@
-﻿namespace Contract.Model.Entities;
+﻿namespace Entities;
 
 public interface IEntityConfiguration
 {

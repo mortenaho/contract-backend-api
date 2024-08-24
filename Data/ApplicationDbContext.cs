@@ -1,11 +1,11 @@
 ﻿using System.Reflection;
-using Contract.Common.ModelBuilder;
-using Contract.Model.Entities;
+using Common.ModelBuilder;
+using Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Contract.Repository;
+namespace Data;
 
 
 public class ApplicationDbContext : IdentityDbContext<IdentityUser>
@@ -18,9 +18,10 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-         
+        var entitiesAssembly = typeof(IEntity).Assembly;
+         builder.RegisterAllEntities<IEntity>(entitiesAssembly);
         builder.ApplyConfigurationsFromAssembly(typeof(IEntityConfiguration).Assembly);
-    }
+     }
     
     public override int SaveChanges()
     {
@@ -33,8 +34,4 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
        this.SoftDeleteEntities();
         return base.SaveChangesAsync(cancellationToken);
     }
-    
-    public DbSet<Model.Entities.Contract> Contract { get; set; }
-    
- 
 }

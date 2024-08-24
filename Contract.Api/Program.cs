@@ -1,7 +1,7 @@
 using Contract.Configuration.Mapper;
-using Contract.Repository;
-using Contract.Repository.Repository;
-using Contract.Repository.UnitOfWork;
+using Data;
+using Data.Repository;
+using Data.UnitOfWork;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

@@ -2,8 +2,9 @@
 using AutoMapper;
 using Contract.DTOs.Request;
 using Contract.DTOs.Response;
-using Contract.Repository;
-using Contract.Repository.UnitOfWork;
+using Data;
+using Data.Repository;
+using Data.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,32 +14,21 @@ namespace Contract.Controller;
 [Route("api/v1/[controller]/[action]")]
 public class ContractController : ControllerBase
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IGenericRepository<Entities.Contract> repositiry;
     private readonly IMapper _mapper;
 
-    public ContractController(IMapper mapper, IUnitOfWork unitOfWork)
+    public ContractController(IMapper mapper, IGenericRepository<Entities.Contract> _repositiry)
     {
-        _unitOfWork = unitOfWork;
+        repositiry = _repositiry;
         this._mapper = mapper;
     }
     
-    [HttpGet]
-    public GeneralResponse<IEnumerable<DTOs.embeded.Contract>> Geyt()
-    {
-        var res = _unitOfWork.Contract.GetAll().ToList();
-        var mapperRes = _mapper.Map<List<DTOs.embeded.Contract>>(res);
-        return new GeneralResponse<IEnumerable<DTOs.embeded.Contract>>()
-        {
-            ResponseCode = 100,
-            ResponseMessage = "operation success",
-            ResponseBody = mapperRes
-        };
-    }
+    
     [Authorize]
     [HttpGet]
     public GeneralResponse<IEnumerable<DTOs.embeded.Contract>> Get()
     {
-        var res = _unitOfWork.Contract.GetAll().ToList();
+        var res = repositiry.TableNoTracking.Where(p=>!p.IsDeleted).ToList();
         var mapperRes = _mapper.Map<List<DTOs.embeded.Contract>>(res);
         return new GeneralResponse<IEnumerable<DTOs.embeded.Contract>>()
         {
@@ -52,7 +42,7 @@ public class ContractController : ControllerBase
     [HttpGet("{id}")]
     public GeneralResponse<DTOs.embeded.Contract> Get(long id)
     {
-        var res = _unitOfWork.Contract.GetById(id);
+        var res = repositiry.GetById(id);
         var mapperRes = _mapper.Map<DTOs.embeded.Contract>(res);
         return new GeneralResponse<DTOs.embeded.Contract>()
         {
@@ -67,10 +57,10 @@ public class ContractController : ControllerBase
     public GeneralResponse Add(ContractRequest request)
     {
         string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var contract = _mapper.Map<Model.Entities.Contract>(request);
+        var contract = _mapper.Map<Entities.Contract>(request);
         contract.UserId = userId;
-        _unitOfWork.Contract.Add(contract);
-        _unitOfWork.Save();
+        repositiry.Add(contract);
+        
         return new GeneralResponse()
         {
             ResponseCode = 100,
@@ -83,10 +73,10 @@ public class ContractController : ControllerBase
     public GeneralResponse Update(ContractRequest request)
     {
         string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var contract = _mapper.Map<Model.Entities.Contract>(request);
+        var contract = _mapper.Map<Entities.Contract>(request);
         contract.UserId = userId;
-        _unitOfWork.Contract.Update(contract);
-        _unitOfWork.Save();
+        repositiry.Update(contract);
+        
         return new GeneralResponse()
         {
             ResponseCode = 100,
@@ -99,8 +89,8 @@ public class ContractController : ControllerBase
     public GeneralResponse Delete(long id)
     {
         string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        _unitOfWork.Contract.Delete(id);
-        _unitOfWork.Save();
+        repositiry.Delete(id);
+        
         return new GeneralResponse()
         {
             ResponseCode = 100,

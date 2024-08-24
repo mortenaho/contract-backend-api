@@ -1,18 +1,18 @@
-﻿using Contract.Repository.Repository;
+﻿using Data.Repository;
 using Microsoft.EntityFrameworkCore;
 
-namespace Contract.Repository.UnitOfWork;
+namespace Data.UnitOfWork;
 
 public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _context;
-    private IGenericRepository<Model.Entities.Contract> _contract;
+    private IGenericRepository<Entities.Contract> _contract;
 
     public UnitOfWork(ApplicationDbContext context)
     {
         _context = context;
     }
-    public IGenericRepository<Model.Entities.Contract> Contract => _contract ??= new GenericRepository<Model.Entities.Contract>(_context);
+    public IGenericRepository<Entities.Contract> Contract => _contract ??= new GenericRepository<Entities.Contract>(_context);
     
     public void Save()
     {
