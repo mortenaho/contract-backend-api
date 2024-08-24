@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
+using Common.ModelBuilder;
 using Contract.DTOs.Request;
 using Contract.DTOs.Response;
 using Data;
@@ -28,7 +29,7 @@ public class ContractController : ControllerBase
     [HttpGet]
     public GeneralResponse<IEnumerable<DTOs.embeded.Contract>> Get()
     {
-        var res = repositiry.TableNoTracking.Where(p=>!p.IsDeleted).ToList();
+        var res = repositiry.TableNoTracking.WhereNotDeleted().ToList();
         var mapperRes = _mapper.Map<List<DTOs.embeded.Contract>>(res);
         return new GeneralResponse<IEnumerable<DTOs.embeded.Contract>>()
         {
