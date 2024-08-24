@@ -21,7 +21,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
     public void Update(T entity) => _dbSet.Attach(entity);
 
-    public void Delete(int id)
+    public void Delete(long id)
     {
         var entity = _dbSet.Find(id);
         if (entity != null) _dbSet.Remove(entity);

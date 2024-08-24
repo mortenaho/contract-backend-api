@@ -15,18 +15,18 @@ public class ContractController : ControllerBase
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    public ContractController(IMapper mapper,IUnitOfWork  unitOfWork)
+
+    public ContractController(IMapper mapper, IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
         this._mapper = mapper;
     }
-
-    [Authorize]
+    
     [HttpGet]
-    public GeneralResponse<IEnumerable<DTOs.embeded.Contract>> Get()
+    public GeneralResponse<IEnumerable<DTOs.embeded.Contract>> Geyt()
     {
         var res = _unitOfWork.Contract.GetAll().ToList();
-        var mapperRes=_mapper.Map<List<DTOs.embeded.Contract>>(res);
+        var mapperRes = _mapper.Map<List<DTOs.embeded.Contract>>(res);
         return new GeneralResponse<IEnumerable<DTOs.embeded.Contract>>()
         {
             ResponseCode = 100,
@@ -34,13 +34,26 @@ public class ContractController : ControllerBase
             ResponseBody = mapperRes
         };
     }
-    
+    [Authorize]
+    [HttpGet]
+    public GeneralResponse<IEnumerable<DTOs.embeded.Contract>> Get()
+    {
+        var res = _unitOfWork.Contract.GetAll().ToList();
+        var mapperRes = _mapper.Map<List<DTOs.embeded.Contract>>(res);
+        return new GeneralResponse<IEnumerable<DTOs.embeded.Contract>>()
+        {
+            ResponseCode = 100,
+            ResponseMessage = "operation success",
+            ResponseBody = mapperRes
+        };
+    }
+
     [Authorize]
     [HttpGet("{id}")]
     public GeneralResponse<DTOs.embeded.Contract> Get(long id)
     {
         var res = _unitOfWork.Contract.GetById(id);
-        var mapperRes=_mapper.Map<DTOs.embeded.Contract>(res);
+        var mapperRes = _mapper.Map<DTOs.embeded.Contract>(res);
         return new GeneralResponse<DTOs.embeded.Contract>()
         {
             ResponseCode = 100,
@@ -64,6 +77,7 @@ public class ContractController : ControllerBase
             ResponseMessage = "operation is success full"
         };
     }
+
     [Authorize]
     [HttpPut]
     public GeneralResponse Update(ContractRequest request)
@@ -72,6 +86,20 @@ public class ContractController : ControllerBase
         var contract = _mapper.Map<Model.Entities.Contract>(request);
         contract.UserId = userId;
         _unitOfWork.Contract.Update(contract);
+        _unitOfWork.Save();
+        return new GeneralResponse()
+        {
+            ResponseCode = 100,
+            ResponseMessage = "operation is success full"
+        };
+    }
+
+    [Authorize]
+    [HttpDelete("{id}")]
+    public GeneralResponse Delete(long id)
+    {
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        _unitOfWork.Contract.Delete(id);
         _unitOfWork.Save();
         return new GeneralResponse()
         {
