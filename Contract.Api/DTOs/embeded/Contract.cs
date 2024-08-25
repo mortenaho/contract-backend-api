@@ -1,4 +1,6 @@
-﻿namespace Contract.DTOs.embeded;
+﻿using Common;
+
+namespace Contract.DTOs.embeded;
 
 public class Contract
 {
@@ -8,4 +10,14 @@ public class Contract
     public string Description { set; get; }
     public string StartDate { set; get; }
     public string EndDate { set; get; }
+
+    public string ShamsiStartDate
+    {
+        get { return StartDate.ToPersianDate(); }
+    }
+
+    public string ShamsiEndDate
+    {
+        get { return EndDate.ToPersianDate(); }
+    }
 }
