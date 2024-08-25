@@ -77,7 +77,6 @@ public class ContractController : ControllerBase
         var contract = _mapper.Map<Entities.Contract>(request);
         contract.UserId = userId;
         repositiry.Update(contract);
-        
         return new GeneralResponse()
         {
             ResponseCode = 100,
@@ -91,7 +90,6 @@ public class ContractController : ControllerBase
     {
         string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         repositiry.Delete(id);
-        
         return new GeneralResponse()
         {
             ResponseCode = 100,
