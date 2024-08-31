@@ -9,8 +9,11 @@ public class CustomMapper:Profile
     {
         CreateMap<Entities.Contract, ContractRequest>().ReverseMap();
         CreateMap<Entities.Contract, DTOs.embeded.Contract>()
-            .ForMember(p=>p.StartDate,c=>c.MapFrom(d=>d.StartDate.ToString("yyyy/MM/dd")))
-            .ForMember(p=>p.EndDate,c=>c.MapFrom(d=>d.EndDate.ToString("yyyy/MM/dd")))
-            .ReverseMap();
+            .ForMember(p => p.StartDate, c => c.MapFrom(d => d.StartDate.ToString("yyyy/MM/dd")))
+            .ForMember(p => p.EndDate, c => c.MapFrom(d => d.EndDate.ToString("yyyy/MM/dd")));
+        CreateMap<DTOs.embeded.Contract,Entities.Contract>()
+            .ForMember(p => p.StartDate, c => c.MapFrom(d =>DateTime.Parse(d.StartDate)))
+            .ForMember(p => p.EndDate, c => c.MapFrom(d => DateTime.Parse(d.EndDate)));
+
     }
 }

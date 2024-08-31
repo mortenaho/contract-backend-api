@@ -28,7 +28,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
 
     public void Update(TEntity entity)
     {
-        Entities.Attach(entity);
+        Entities.Attach(entity).State=EntityState.Modified;
         Save();
     }
 
