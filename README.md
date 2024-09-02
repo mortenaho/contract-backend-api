@@ -34,9 +34,9 @@ Contract.Api
     Contract.http: HTTP file for testing API requests.
     Dockerfile: Docker configuration for the API service.
 
-Contract.UI
+ 
 
-    Data
+Data
         Dependencies: Dependencies related to data management.
         Migrations: Database migrations for schema changes.
         Repository
@@ -44,22 +44,21 @@ Contract.UI
             IGenericRepository.cs: Interface for the generic repository.
         UnitOfWork: Manages transaction scopes.
         ApplicationDbContext.cs: Database context configuration.
-
 Entities
 
-    Dependencies: Dependencies for the entity layer.
-    Contracts: Domain models for contract management.
-        BaseEntity.cs: Base entity class with common properties.
-        Contract.cs: Contract entity model.
-        ContractingParty.cs: Contracting party entity model.
-        User.cs: User entity model.
+        Dependencies: Dependencies for the entity layer.
+        Contracts: Domain models for contract management.
+            BaseEntity.cs: Base entity class with common properties.
+            Contract.cs: Contract entity model.
+            ContractingParty.cs: Contracting party entity model.
+            User.cs: User entity model.
 
 Getting Started
 Prerequisites
 
-    .NET 8 SDK
-    Node.js (for running Next.js)
-    Docker (optional, for containerized deployment)
+        .NET 8 SDK
+        Node.js (for running Next.js)
+        Docker (optional, for containerized deployment)
 Sure! Here's how you can structure your README for GitHub based on the information you provided:
 Contract Management Project
 
