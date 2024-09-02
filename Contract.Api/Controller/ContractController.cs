@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Contract.Controller;
 
+[Authorize]
 [ApiController]
 [Route("api/v1/[controller]/[action]")]
 public class ContractController : ControllerBase
@@ -22,10 +23,11 @@ public class ContractController : ControllerBase
     {
         repositiry = _repositiry;
         this._mapper = mapper;
+        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     }
     
     
-    [Authorize]
+  
     [HttpGet]
     public GeneralResponse<IEnumerable<DTOs.embeded.Contract>> Get()
     {
@@ -39,7 +41,7 @@ public class ContractController : ControllerBase
         };
     }
 
-    [Authorize]
+    
     [HttpGet("{id}")]
     public GeneralResponse<DTOs.embeded.Contract> Get(long id)
     {
@@ -53,13 +55,11 @@ public class ContractController : ControllerBase
         };
     }
 
-    [Authorize]
+    
     [HttpPost]
     public GeneralResponse Add(ContractRequest request)
     {
-        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var contract = _mapper.Map<Entities.Contract>(request);
-        contract.UserId = userId;
         repositiry.Add(contract);
         
         return new GeneralResponse()
@@ -69,13 +69,12 @@ public class ContractController : ControllerBase
         };
     }
 
-    [Authorize]
+ 
     [HttpPut]
     public GeneralResponse Update(ContractRequest request)
     {
-        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+       
         var contract = _mapper.Map<Entities.Contract>(request);
-        contract.UserId = userId;
         repositiry.Update(contract);
         return new GeneralResponse()
         {
@@ -83,12 +82,10 @@ public class ContractController : ControllerBase
             ResponseMessage = "operation is success full"
         };
     }
-
-    [Authorize]
+ 
     [HttpDelete("{id}")]
     public GeneralResponse Delete(long id)
     {
-        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         repositiry.Delete(id);
         return new GeneralResponse()
         {

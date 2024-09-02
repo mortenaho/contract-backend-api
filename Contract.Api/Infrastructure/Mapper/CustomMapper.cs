@@ -14,6 +14,8 @@ public class CustomMapper:Profile
         CreateMap<DTOs.embeded.Contract,Entities.Contract>()
             .ForMember(p => p.StartDate, c => c.MapFrom(d =>DateTime.Parse(d.StartDate)))
             .ForMember(p => p.EndDate, c => c.MapFrom(d => DateTime.Parse(d.EndDate)));
-
+        CreateMap<Entities.ContractingParty, ContractingPartyRequest>().ReverseMap();
+        CreateMap<Entities.ContractingParty, DTOs.embeded.ContractingPartyDetail>().ReverseMap();
+        
     }
 }
