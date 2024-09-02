@@ -34,7 +34,6 @@ Contract.Api
     Contract.http: HTTP file for testing API requests.
     Dockerfile: Docker configuration for the API service.
 
- 
 
 Data
         Dependencies: Dependencies related to data management.
@@ -96,9 +95,7 @@ Contract.Api
     Contract.http: HTTP file for testing API requests.
     Dockerfile: Docker configuration for the API service.
 
-Contract.UI
-
-    Data
+Data
         Dependencies: Dependencies related to data management.
         Migrations: Database migrations for schema changes.
         Repository
