@@ -15,6 +15,11 @@ public class Contract:BaseEntity
     public DateTime StartDate { set; get; }
     public DateTime EndDate { set; get; }
     public string? UserId { set; get; }
+    // Foreign Key
+    public int ContractingPartyId { get; set; }
+
+    // Navigation Property
+    public virtual ContractingParty ContractingParty { get; set; }
 }
 
 public class ContractEntityTypeConfiguration : IEntityTypeConfiguration<Contract>,IEntityConfiguration
@@ -28,5 +33,8 @@ public class ContractEntityTypeConfiguration : IEntityTypeConfiguration<Contract
         builder.Property(b => b.StartDate).IsRequired();
         builder.Property(b => b.EndDate).IsRequired();
         builder.Property(b => b.UserId).IsRequired();
+        builder.HasOne<ContractingParty>(p => p.ContractingParty)
+            .WithMany(cp => cp.Contracts)
+            .HasForeignKey(c => c.ContractingPartyId);
     }
 }
