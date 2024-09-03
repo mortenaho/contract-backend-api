@@ -8,6 +8,7 @@ using Data.Repository;
 using Data.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Contract.Controller;
 
@@ -23,7 +24,7 @@ public class ContractController : ControllerBase
     {
         repositiry = _repositiry;
         this._mapper = mapper;
-        string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+       // string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     }
     
     
@@ -31,7 +32,9 @@ public class ContractController : ControllerBase
     [HttpGet]
     public GeneralResponse<IEnumerable<DTOs.embeded.Contract>> Get()
     {
-        var res = repositiry.TableNoTracking.WhereNotDeleted().ToList();
+        var res = repositiry.TableNoTracking
+            .Include(p=>p.ContractingParty)
+            .WhereNotDeleted().ToList();
         var mapperRes = _mapper.Map<List<DTOs.embeded.Contract>>(res);
         return new GeneralResponse<IEnumerable<DTOs.embeded.Contract>>()
         {
